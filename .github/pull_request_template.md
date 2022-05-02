@@ -4,6 +4,7 @@
 * [ ] Bug fix
 * [ ] Feature implementation
 * [ ] Refactoring
+* [ ] Documentation change
 
 **Describe the pull request:**
 <!--- Describe your changes in detail -->
