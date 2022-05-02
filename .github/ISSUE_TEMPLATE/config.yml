@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ask questions
+    url: https://github.com/Efratror/Template-Repo/discussions/new
+    about: Please ask and answer questions here.
