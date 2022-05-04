@@ -17,6 +17,34 @@ for /f "delims=" %%f in ('dir /b /a-d-h-s lib') do (
 rmdir /s /q classes
 rmdir /s /q works
 
+mkdir classes
+
+set modName=core
+set jarPath=core/core.jar
+
+REM Create module for core.jar
+echo Creating module info
+jdeps --module-path modules\ --generate-module-info works\ %jarPath%
+
+copy /y /v core\core.jar modules\ 1>nul
+
+echo Creating module jar for %modName%.jar
+
+cd classes
+jar xf ..\core\%modName%.jar
+cd ..\
+
+cd works\%modName%
+javac -p %modName%;../../modules -d %cd%\..\..\classes module-info.java
+echo Compile complete
+cd ..\..\
+
+jar uf modules/%modName%.jar -C classes module-info.class
+echo Repacking complete
+
+rmdir /s /q classes
+rmdir /s /q works
+
 goto :end
 
 :sub
