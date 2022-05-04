@@ -45,6 +45,10 @@ echo Repacking complete
 rmdir /s /q classes
 rmdir /s /q works
 
+REM Create JRE from all modules
+jlink --no-header-files --no-man-pages --compress=2 --strip-debug --module-path modules --add-modules core --output ..\jre\windows
+echo JRE created
+
 goto :end
 
 :sub
