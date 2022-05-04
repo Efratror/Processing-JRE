@@ -1,7 +1,6 @@
 @ECHO OFF
 setlocal ENABLEDELAYEDEXPANSION
 rmdir /s /q ..\jre\windows
-rmdir /s /q modules
 mkdir modules
 mkdir classes
 
@@ -48,6 +47,7 @@ rmdir /s /q works
 REM Create JRE from all modules
 jlink --no-header-files --no-man-pages --compress=2 --strip-debug --module-path modules --add-modules core --output ..\jre\windows
 echo JRE created
+rmdir /s /q modules
 
 goto :end
 
