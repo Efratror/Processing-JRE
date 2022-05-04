@@ -9,10 +9,10 @@ rmdir /s /q ..\jre\windows
 mkdir modules
 mkdir classes
 
-REM Loop over all files in lib folder
+cd utils
 for /f "delims=" %%f in ('dir /b /a-d-h-s lib') do (
-    echo Creating module info for %%f
-    jdeps --generate-module-info works\ --ignore-missing-deps lib\%%f
+call getJDK.bat || exit /b 1
+cd ../
     copy /y /v lib\%%f modules\%%f 1>nul
     set "_=%%f" & ren "modules\%%f" "!_:-=.!"
     call :sub %%~nf
