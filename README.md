@@ -1,5 +1,5 @@
 # Processing Java Runtime Environment (JRE)
-A JRE is what makes java programs run. As processing is a java bast application it needs a JRE our the full java development kit(JDK) to execute. One advantage of a JRE is its smaller size (40-50 mb) also JRE's can be custom tailored to include all libraries needed to run an application. 
+A JRE is what makes java programs run. As processing is a java based application it needs a JRE our the full java development kit(JDK) to execute. One advantage of a JRE is its smaller size (40-50 mb) also JRE's can be custom tailored to include all libraries needed to run an application. 
 
 These JRE's are currently build for Processing 4.0b8 and use Openjdk-17.0.2.
 
