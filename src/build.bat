@@ -4,8 +4,6 @@ echo.
 echo ---Building custom JRE for processing---
 echo.
 
-REM Create JRE from all modules
-
 cd utils
 call compileModules.bat || exit /b 1
 call getJDK.bat || exit /b 1
@@ -35,6 +33,7 @@ jlink --no-header-files --no-man-pages --compress=2 --strip-debug --module-path 
 echo.
 echo ---JRE's created---
 
+TIMEOUT /T 2 1>>nul
 rmdir /s /q modules
 rmdir /s /q openjdk-17.0.2
 
