@@ -30,14 +30,14 @@ ren "jdk-17.0.2" "%fileName%" || goto :downloadError
 del %fileName%.zip
 cd ../
 
-if exist ..\jre\windows (
-  rmdir /s /q ..\jre\windows
+if exist ..\bin\windows (
+  rmdir /s /q ..\bin\windows
   echo Old JRE removed
 )
-call jlink --no-header-files --no-man-pages --compress=2 --strip-debug --module-path modules;%cd%\compilerModule\bin;%cd%\openjdk-17.0.2\windows_x64\jmods --add-modules core,compilerModule --output ..\jre\windows || goto :error
+call jlink --no-header-files --no-man-pages --compress=2 --strip-debug --module-path modules;%cd%\compilerModule\bin;%cd%\openjdk-17.0.2\windows_x64\jmods --add-modules core,compilerModule --output ..\bin\windows || goto :error
 echo JRE created
 
-cd ../jre
+cd ../bin
 if exist processing-jre-%buildVersion%-windows.zip (
   call del processing-jre-%buildVersion%-windows.zip 1>>nul
   echo Old archive removed
@@ -46,7 +46,7 @@ if exist processing-jre-%buildVersion%-windows.zip (
 call powershell Compress-Archive -f windows  processing-jre-%buildVersion%-windows.zip || goto :packError
 echo Archive packed
 cd ../src
-call rmdir /s /q ..\jre\windows
+call rmdir /s /q ..\bin\windows
 
 goto :end
 

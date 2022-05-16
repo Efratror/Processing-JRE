@@ -30,15 +30,15 @@ ren "jdk-17.0.2.jdk" "%fileName%" || goto :downloadError
 del %fileName%.tar.gz
 cd ../
 
-if exist ..\jre\macos (
-  rmdir /s /q ..\jre\macos
+if exist ..\bin\macos (
+  rmdir /s /q ..\bin\macos
   echo Old JRE removed
 )
 
-call jlink --no-header-files --no-man-pages --compress=2 --strip-debug --module-path modules;%cd%\compilerModule\bin;%cd%\openjdk-17.0.2\macos_x64\jmods --add-modules core,compilerModule --output ..\jre\macos || goto :error
+call jlink --no-header-files --no-man-pages --compress=2 --strip-debug --module-path modules;%cd%\compilerModule\bin;%cd%\openjdk-17.0.2\macos_x64\jmods --add-modules core,compilerModule --output ..\bin\macos || goto :error
 echo JRE created
 
-cd ../jre
+cd ../bin
 if exist processing-jre-%buildVersion%-macos.tar.gz (
   call del processing-jre-%buildVersion%-macos.tar.gz 1>>nul
   echo Old archive removed
@@ -48,7 +48,7 @@ TIMEOUT /T 2 1>>nul
 call tar -czf processing-jre-%buildVersion%-macos.tar.gz macos  || goto :packError
 echo Archive packed
 cd ../src
-call rmdir /s /q ..\jre\macos
+call rmdir /s /q ..\bin\macos
 
 goto :end
 
