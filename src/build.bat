@@ -22,9 +22,6 @@ call createMacOSJRE.bat
 cd ../
 echo ---JRE's created---
 
-TIMEOUT /T 2 1>>nul
-rmdir /s /q modules
-
 goto :end
 
 :end
