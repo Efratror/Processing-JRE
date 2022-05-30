@@ -5,14 +5,11 @@ echo ---Building custom JRE for processing---
 echo.
 
 cd utils
-call compileModules.bat || exit /b 1
+REM call compileModules.bat || exit /b 1
 cd ../
 
-cd compilerModule
-call build.bat || cd ../utils && exit /b 1
+call ../gradlew build || exit /b 1
 echo.
-cd ../
-
 cd utils
 call createWindowsJRE.bat
 TIMEOUT /T 5 1>>nul
