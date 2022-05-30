@@ -3,6 +3,6 @@ src/compilerModule/bin
 src/modules
 # Ignore Gradle project-specific cache directory
 .gradle
-
+.vscode
 # Ignore Gradle build output directory
 build
