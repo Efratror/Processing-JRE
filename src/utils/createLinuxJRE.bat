@@ -7,11 +7,9 @@ if not exist modules (
     cd ../
 )
 
-if not exist compilerModule\bin (
-    cd compilerModule
-    call build.bat || cd ../utils && exit /b 1
+if not exist compilerModule\build\libs (
+    call ../../gradlew build || exit /b 1
     echo.
-    cd ../
 )
 
 echo ---Build JRE for linux---
@@ -34,7 +32,7 @@ if exist ..\bin\linux (
   rmdir /s /q ..\bin\linux
   echo Old JRE removed
 )
-call jlink --no-header-files --no-man-pages --compress=2 --strip-debug --module-path modules;%cd%\compilerModule\bin;%cd%\openjdk-17.0.2\linux_x64\jmods --add-modules core,compilerModule --output ..\bin\linux || goto :error
+call jlink --no-header-files --no-man-pages --compress=2 --strip-debug --module-path modules;%cd%\compilerModule\build\libs;%cd%\openjdk-17.0.2\linux_x64\jmods --add-modules core,compilerModule --output ..\bin\linux || goto :error
 echo JRE created
 
 cd ../bin
