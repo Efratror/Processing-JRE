@@ -9,3 +9,4 @@
 
 rootProject.name = 'Processing-JRE'
 include 'src:compilerModule'
+include 'src:processing'
