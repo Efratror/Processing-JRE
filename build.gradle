@@ -21,7 +21,7 @@ task winDel(type: Delete) {
 task winJlink(type:Exec) {
     dependsOn winDel
 
-    commandLine "jlink", '--module-path', "src/jdk/17.0.2/windows/jmods${File.pathSeparatorChar}src/modules/${File.pathSeparatorChar}src/compilerModule/build/libs/",
+    commandLine "jlink", '--module-path', "src/jdk/17.0.2/windows/jmods${File.pathSeparatorChar}src/processing/build/modules/${File.pathSeparatorChar}src/compilerModule/build/libs/",
             '--add-modules', "core,compilerModule", '--output', "build/jre/windows", '--strip-debug',
             '--compress', '2', '--no-header-files', '--no-man-pages'
 
@@ -40,13 +40,13 @@ task packWin(type: Zip) {
 }
 
 task linuxDel(type: Delete) {
-  delete 'build/jre/Linux'
+    delete 'build/jre/Linux'
 }
 
 task linuxJlink(type:Exec) {
     dependsOn linuxDel
 
-    commandLine "jlink", '--module-path', "src/jdk/linux/jmods${File.pathSeparatorChar}src/modules/${File.pathSeparatorChar}src/compilerModule/build/libs/",
+    commandLine "jlink", '--module-path', "src/jdk/linux/jmods${File.pathSeparatorChar}src/processing/build/modules/${File.pathSeparatorChar}src/compilerModule/build/libs/",
             '--add-modules', "core,compilerModule", '--output', "build/jre/linux", '--strip-debug',
             '--compress', '2', '--no-header-files', '--no-man-pages'
     
@@ -66,13 +66,13 @@ task packLinux(type: Tar) {
 }
 
 task macDel(type: Delete) {
-  delete 'build/jre/mac'
+    delete 'build/jre/mac'
 }
 
 task macJlink(type:Exec) {
     dependsOn macDel
 
-    commandLine "jlink", '--module-path', "src/jdk/mac/jmods${File.pathSeparatorChar}src/modules/${File.pathSeparatorChar}src/compilerModule/build/libs/",
+    commandLine "jlink", '--module-path', "src/jdk/mac/jmods${File.pathSeparatorChar}src/processing/build/modules/${File.pathSeparatorChar}src/compilerModule/build/libs/",
             '--add-modules', "core,compilerModule", '--output', "build/jre/mac", '--strip-debug',
             '--compress', '2', '--no-header-files', '--no-man-pages'
 }
