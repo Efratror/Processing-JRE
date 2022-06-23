@@ -37,3 +37,11 @@ test {
 jar {
     baseName 'CompilerModule'
 }
+
+assemble.group = ""
+buildDependents.group = ""
+buildNeeded.group = ""
+classes.group = ""
+jar.group = ""
+testClasses.group = ""
+clean.group = ""
