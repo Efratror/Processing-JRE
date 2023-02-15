@@ -5,4 +5,5 @@ module compilerModule {
     requires java.management;
     requires java.sql;
     requires java.xml;
+    requires jdk.zipfs;
 }
