@@ -5,16 +5,159 @@
  * Learn more about Gradle by exploring our samples at https://docs.gradle.org/7.4.2/samples
  */
 
-task packAll() {
+def ver = "0.02-ALPHA"
+
+// Build Tasks
+task build() {
     description 'Creates the JRE\'s for all available platforms'
-    group 'pack'
-    dependsOn 'packWin'
-    dependsOn 'packLinux'
-    dependsOn 'packMac'
+    group 'build'
+    dependsOn 'buildWin'
+    dependsOn 'buildLinux'
+    dependsOn 'buildMac'
+    dependsOn(':src:compilerModule:build')
+    dependsOn(':src:processing:build')
+
+    mustRunAfter(':src:compilerModule:build')
+    mustRunAfter(':src:processing:build')
 }
 
+task buildCompiler() {
+    description 'Build compiler'
+    group 'build'
+    dependsOn(':src:compilerModule:build')
+}
+
+task buildModules() {
+    description 'Build processing modules from libs'
+    group 'build'
+    dependsOn(':src:processing:build')
+}
+
+task buildWin(type: Zip) {
+    description 'Creates the JRE\'s for windows'
+    group 'build'
+
+    dependsOn 'winJlink'
+    archiveBaseName = rootProject.getName()
+    archiveAppendix = "windows-x64"
+    archiveVersion = ver
+    destinationDirectory = layout.buildDirectory.dir('dist')
+
+    from layout.buildDirectory.dir("jre/windows")
+}
+
+task buildLinux(type: Tar) {
+    description 'Creates the JRE\'s for linux'
+    group 'build'
+
+    dependsOn 'linuxJlink'
+    archiveBaseName = rootProject.getName()
+    archiveAppendix = "linux-x64"
+    archiveExtension = "tar.gz"
+    archiveVersion = ver
+    destinationDirectory = layout.buildDirectory.dir('dist')
+
+    from layout.buildDirectory.dir("jre/linux")
+}
+
+task buildMac(type: Tar) {
+    description 'Creates the JRE\'s for mac'
+    group 'build'
+
+    dependsOn 'macJlink'
+    archiveBaseName = rootProject.getName()
+    archiveAppendix = "mac-x64"
+    archiveExtension = "tar.gz"
+    archiveVersion = ver
+    destinationDirectory = layout.buildDirectory.dir('dist')
+
+    from layout.buildDirectory.dir("jre/mac")
+}
+
+// Clean Tasks
+task clean(type: Delete) {
+    description 'Deletes JRE build folder'
+    group 'clean'
+    delete 'build'
+}
+
+task cleanCompiler() {
+    description 'Deletes compiler build folder'
+    group 'clean'
+    dependsOn(':src:compilerModule:clean')
+}
+
+task cleanModules() {
+    description 'Deletes processing modules build folder'
+    group 'clean'
+    dependsOn(':src:processing:clean')
+}
+
+task cleanWin(type: Delete) {
+    description 'Deletes Windows JRE build folder'
+    group 'clean'
+    delete 'build/jre/win'
+}
+
+task cleanLinux(type: Delete) {
+    description 'Deletes Linux JRE build folder'
+    group 'clean'
+    delete 'build/jre/linux'
+}
+
+task cleanMac(type: Delete) {
+    description 'Deletes Mac JRE build folder'
+    group 'clean'
+    delete 'build/jre/mac'
+}
+
+// Clean and build Tasks
+task cleanBuild(type: Delete) {
+    description 'Clean build of all JRE\'s'
+    group 'clean build'
+    delete 'build'
+    finalizedBy('build')
+}
+
+task cleanBuildCompiler() {
+    description 'Clean and build the compiler'
+    group 'clean build'
+    dependsOn(':src:compilerModule:clean')
+    finalizedBy(':src:compilerModule:build')
+}
+
+task cleanBuildModules() {
+    description 'Clean and build the modules'
+    group 'clean build'
+    dependsOn(':src:processing:clean')
+    finalizedBy(':src:processing:build')
+}
+
+task cleanBuildWin(type: Delete) {
+    description 'Clean build of Windows JRE'
+    group 'clean build'
+    delete 'build/jre/win'
+    finalizedBy 'buildWin'
+}
+
+task cleanBuildLinux(type: Delete) {
+    description 'Clean build of Linux JRE'
+    group 'clean build'
+    delete 'build/jre/linux'
+    finalizedBy 'buildLinux'
+}
+
+task cleanBuildMac(type: Delete) {
+    description 'Clean build of Mac JRE'
+    group 'clean build'
+    delete 'build/jre/mac'
+    finalizedBy 'buildMac'
+}
+
+// Helper tasks
 task winDel(type: Delete) {
     dependsOn(':src:compilerModule:build')
+    dependsOn(':src:processing:build')
     delete 'build/jre/windows'
 }
 
@@ -27,19 +170,9 @@ task winJlink(type:Exec) {
 
 }
 
-task packWin(type: Zip) {
-    description 'Creates the JRE\'s for windows'
-    group 'pack'
-
-    dependsOn winJlink
-    archiveBaseName = rootProject.getName()
-    archiveAppendix = "windows-x64"
-    destinationDirectory = layout.buildDirectory.dir('dist')
-
-    from layout.buildDirectory.dir("jre/windows")
-}
-
 task linuxDel(type: Delete) {
+    dependsOn(':src:compilerModule:build')
+    dependsOn(':src:processing:build')
     delete 'build/jre/Linux'
 }
 
@@ -52,20 +185,9 @@ task linuxJlink(type:Exec) {
     
 }
 
-task packLinux(type: Tar) {
-    description 'Creates the JRE\'s for linux'
-    group 'pack'
-
-    dependsOn linuxJlink
-    archiveBaseName = rootProject.getName()
-    archiveAppendix = "linux-x64"
-    archiveExtension = "tar.gz"
-    destinationDirectory = layout.buildDirectory.dir('dist')
-
-    from layout.buildDirectory.dir("jre/linux")
-}
-
 task macDel(type: Delete) {
+    dependsOn(':src:compilerModule:build')
+    dependsOn(':src:processing:build')
     delete 'build/jre/mac'
 }
 
@@ -77,15 +199,5 @@ task macJlink(type:Exec) {
             '--compress', '2', '--no-header-files', '--no-man-pages'
 }
 
-task packMac(type: Tar) {
-    description 'Creates the JRE\'s for mac'
-    group 'pack'
-
-    dependsOn macJlink
-    archiveBaseName = rootProject.getName()
-    archiveAppendix = "mac-x64"
-    archiveExtension = "tar.gz"
-    destinationDirectory = layout.buildDirectory.dir('dist')
-
-    from layout.buildDirectory.dir("jre/mac")
-}
+init.group = ""
+wrapper.group = ""
